@@ -1,43 +1,85 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div class="might-delete-later-thought-I-looked-cute">
-  <div style="text-align:center">
-    <h1>
-      Welcome to {{ title }}!
-    </h1>
-    <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+
+<!--<section>-->
+
+
+  <!--<div class="container">-->
+    <!--<div class="row align-items-center">-->
+      <!--<h2>Explore Two Way Data Binding: </h2>-->
+
+      <!--&lt;!&ndash;This is to show you how two way binding works&ndash;&gt;-->
+      <!--&lt;!&ndash;Open your dev console&ndash;&gt;-->
+      <!--&lt;!&ndash;Notice how the model can change the view and the view can change the model (unlike React and Vue)&ndash;&gt;-->
+      <!--<input [(ngModel)]="twoWayExample">-->
+      <!--<button (click)="setTwoWayBinding()">Set Value</button>-->
+      <!--<button (click)="checkTwoWayBinding()">Check Value</button>-->
+
+    <!--</div>-->
+  <!--</div>-->
+<!--</section>-->
+
+
+
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <div class="p-5">
+          <img class="img-fluid rounded-circle" src="../assets/images/google-logo.png" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <div class="p-5">
+          <h2 class="display-4">Login into your Google account</h2>
+          <p>We use this to automatically import your syllabus directly into your google calendar.</p>
+        </div>
+      </div>
+    </div>
   </div>
-  <div>
-    <h2>Here are some links to help you start: </h2>
-    <ul>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-      </li>
-    </ul>
+</section>
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="p-5">
+          <img class="img-fluid rounded" src="../assets/images/syllabus-collage.png" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-5">
+          <h2 class="display-4">Upload your Syllabus</h2>
+          <p>
+            Assignments, Exams, Dates & Locations are all read and parsed from your pdf/image. From here
+            you can make manual edits to each event.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 
-<div class="fun-with-two-way-binding">
 
-  <h2>Explore Two Way Data Binding: </h2>
-
-  <!--This is to show you how two way binding works-->
-  <!--Open your dev console-->
-  <!--Notice how the model can change the view and the view can change the model (unlike React and Vue)-->
-  <input [(ngModel)]="twoWayExample">
-  <button (click)="setTwoWayBinding()">Set Value</button>
-  <button (click)="checkTwoWayBinding()">Check Value</button>
-
-</div>
-
-<br>
-<br>
-
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <div class="p-5">
+          <img class="img-fluid rounded-circle" src="../assets/images/google-calendar.png" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <div class="p-5">
+          <h2 class="display-4">Import Events to your Calendar</h2>
+          <p>
+            Once you're happy with the results, simply import all your events into your google calendar.
+            Yes, it's actually just that easy!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <router-outlet></router-outlet>
