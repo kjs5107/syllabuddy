@@ -5,13 +5,13 @@ import { FormsModule } from '@angular/forms';
 
 // Internal Modules, Components, and Services
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { AppService } from "./app.service";
+import { LandingPageComponent } from './landing-page.component';
+import { LandingPageService } from "./landing-page.service";
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
@@ -19,6 +19,6 @@ import { AppService } from "./app.service";
     FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [LandingPageComponent]
 })
 export class AppModule { }
