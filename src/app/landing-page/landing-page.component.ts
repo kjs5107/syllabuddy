@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LandingPageService } from "./landing-page.service"
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'landing-page',
@@ -12,7 +13,9 @@ export class LandingPageComponent {
   twoWayExample = 'This is cool!';
 
   // Create an instance of our LandingPageService
-  constructor(private landingPageService: LandingPageService) { }
+  constructor(private landingPageService: LandingPageService) {
+    console.log("landing");
+  }
 
   // Angular Lifecycle Hook
   ngOnInit() {

@@ -5,13 +5,17 @@ import { FormsModule } from '@angular/forms';
 
 // Internal Modules, Components, and Services
 import { AppRoutingModule } from './app-routing.module';
-import { LandingPageComponent } from '../landing-page/landing-page.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { UploadAndReviewComponent } from './upload-and-review/upload-and-review.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppComponent } from './app.component';
 
 
 @NgModule({
   declarations: [
     LandingPageComponent,
+    UploadAndReviewComponent,
+    PageNotFoundComponent,
     AppComponent
   ],
   imports: [
@@ -20,6 +24,6 @@ import { AppComponent } from './app.component';
     FormsModule
   ],
   providers: [],
-  bootstrap: [LandingPageComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

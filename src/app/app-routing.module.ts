@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LandingPageComponent } from "../landing-page/landing-page.component";
-import { AppComponent } from "./app.component";
+import { LandingPageComponent } from "./landing-page/landing-page.component";
+import { UploadAndReviewComponent } from "./upload-and-review/upload-and-review.component";
+import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
 const routes: Routes = [
-  { path: 'upload-and-review', component: AppComponent },
+  { path: '', redirectTo: '/landing-page', pathMatch: 'full'},
+  { path: 'upload-and-review', component: UploadAndReviewComponent },
   { path: 'landing-page', component: LandingPageComponent },
-  { path: '',
-    redirectTo: '/landing-page',
-    pathMatch: 'full'
-  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
