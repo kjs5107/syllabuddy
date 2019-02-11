@@ -5,13 +5,14 @@ import { FormsModule } from '@angular/forms';
 
 // Internal Modules, Components, and Services
 import { AppRoutingModule } from './app-routing.module';
-import { LandingPageComponent } from './landing-page.component';
-import { LandingPageService } from "./landing-page.service";
+import { LandingPageComponent } from '../landing-page/landing-page.component';
+import { AppComponent } from './app.component';
 
 
 @NgModule({
   declarations: [
-    LandingPageComponent
+    LandingPageComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
