@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UploadAndReviewService } from "./upload-and-review.service";
 import * as moment from 'moment';
+//import 'dropzone';
+
 declare let Tesseract: any;
+
+
 
 @Component({
   selector: 'app',
