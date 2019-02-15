@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UploadAndReviewService } from "./upload-and-review.service";
+import 'dropzone';
+
 
 @Component({
   selector: 'app',
