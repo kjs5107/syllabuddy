@@ -14,37 +14,65 @@ declare let Tesseract: any;
 })
 export class UploadAndReviewComponent implements OnInit {
 
-  constructor(private upLoadAndReviewSerivce: UploadAndReviewService) { }
+  constructor(private uploadAndReviewSerivce: UploadAndReviewService) {}
 
   ngOnInit() {
 
     /**
      * I found some base regex online and played around with it some more to suit our needs
-     * It will match all the formats I can think of... 2 2 4, 4 2 2, 2 4, 4 2, and 2 2.
+     * It will match all the number based formats I can think of ... 2 2 4, 4 2 2, 2 4, 4 2, and 2 2.
      * Where a digit above represents how many digits there are in the string and a space represents a space, /, -, or .
      * For example: 10/10/2010 is 2 2 4.
      *
      * @type {RegExp}
      */
-    let dateRegex:RegExp = /(\d{4}([.\-/ ])\d{2}\2\d{2}|\d{2}([.\-/ ])\d{2}\3\d{4}|\d{2}([.\-/ ])\d{4}|\d{4}([.\-/ ])\d{2}|\d{2}([.\-/ ])\d{2})/g;
+    let dateRegex: RegExp = /(\d{4}([.\-/ ])\d{2}\2\d{2}|\d{2}([.\-/ ])\d{2}\3\d{4}|\d{2}([.\-/ ])\d{4}|\d{4}([.\-/ ])\d{2}|\d{2}([.\-/ ])\d{2})/g;
+    // TODO: Need to add support for string based formats as well...e.g. Fri Feb 15...
 
-    (Tesseract as any).recognize('../../assets/images/testSyllabus.jpg')
+    Tesseract.recognize('../../assets/images/testSyllabus.jpg')
       .catch(err => console.error(err))
       .then((result) => {
 
-        let allRawDates = result.text.match(dateRegex);
+        let allRawDates: string[] = result.text.match(dateRegex);
 
         console.log(result);
-        console.log(allRawDates);
 
-        // TODO: If rawDates don't have three groups, we need to add the group to make it valid for Moment.js
-
+        // Establish which date format to use
+        let format = this.grabDateFormat();
 
         // Convert rawDates to moment dates
         let allDates = [];
-        for (let rawDate in allRawDates) {
-          let date = moment(rawDate).format('MM-DD-YYYY');
+        let prevMonths: string[] = [];
+        for (let rawDate of allRawDates) {
+
+          // If rawDate doesn't have three groups, we need to add the group to make it valid for Moment.js
+          // If only two groups, we're going to assume it's either MM/DD or DD/MM.
+          // If it's MM/YYYY or YYYY/MM it will most likely be in word form, so we're ignoring those for now.
+          // So we need to inject a year into the string properly.
+          let seperator = /[.,\/ -]/;
+          let rawDateSplit = rawDate.split(seperator);
+          if(rawDateSplit.length === 2) {
+
+            switch(format) {
+              case 'MM/DD/YYYY':
+              case 'MM.DD.YYYY':
+              case 'MM-DD-YYYY':
+              case 'MM DD YYYY':
+                rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, true, format.match(seperator)[0]);
+                break;
+              case 'DD/MM/YYYY':
+              case 'DD.MM.YYYY':
+              case 'DD-MM-YYYY':
+              case 'DD MM YYYY':
+                rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, false, format.match(seperator)[0]);
+                break
+            }
+
+          }
+
+          let date = moment(rawDate, format).format(format);
           allDates.push(date);
+
         }
         console.log(allDates);
 
@@ -52,5 +80,60 @@ export class UploadAndReviewComponent implements OnInit {
       .finally(resultOrError => console.log(resultOrError))
 
   }
+
+
+  /**
+   * We're going to assume we received the dates in chronological order since it's a syllabus
+   * So we're going to set the year to the current year unless we go past December, then it's next year
+   *
+   * @param {string[]} rawDateSplit
+   * @param {string[]} prevMonths
+   * @param {string} rawDate
+   * @param {boolean} monthFirst
+   * @param {string} seperator
+   */
+  addYear = (rawDateSplit:string[], prevMonths:string[], rawDate:string, monthFirst:boolean, seperator: string): string => {
+
+    let rawMonth = monthFirst ? rawDateSplit[0]: rawDateSplit[1];
+
+    // If the month of this date is less than or equal to December, and we've already seen December show up
+    if(Number(rawMonth) <= 12 && prevMonths.includes('12')) {
+      rawDate = rawDate.concat(seperator + (new Date().getFullYear() + 1) + '');
+    }
+    else {
+      rawDate = rawDate.concat(seperator + new Date().getFullYear() + '');
+    }
+    prevMonths.push(rawMonth);
+
+    return rawDate;
+
+  };
+
+  /**
+   * Ascertain the user's locale to determine the Date Format to pass into moment.js
+   *
+   * @returns {string}
+   */
+  grabDateFormat = (): string => {
+
+    // Get user locale
+    let locale = window.navigator.language;
+
+    // Set locale to moment
+    moment.locale(locale);
+
+    // Get locale data
+    let localeData = moment.localeData();
+    let format = localeData.longDateFormat('L');
+
+    // Test it
+    let m2 = moment('5-1-2017', format);
+    console.log(m2.format());
+    console.log(m2.format(format) + ' using format: ' + format);
+
+    return format;
+
+  };
+
 
 }
