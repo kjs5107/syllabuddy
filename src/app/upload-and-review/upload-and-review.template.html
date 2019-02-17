@@ -9,9 +9,18 @@
 
     <div class="col">
 
-      <form action="/file-upload"
-            class="dropzone"
-            id="my-awesome-dropzone"></form>
+      <div style="height: 500px;">
+
+
+        <file-pond #myPond
+                   [options]="pondOptions"
+                   [files]="pondFiles"
+                   (oninit)="pondHandleInit()"
+                   (onaddfile)="pondHandleAddFile($event)">
+        </file-pond>
+
+      </div>
+
 
     </div>
 

@@ -9,6 +9,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { UploadAndReviewComponent } from './upload-and-review/upload-and-review.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppComponent } from './app.component';
+import { FilePondModule } from 'ngx-filepond';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    FilePondModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { UploadAndReviewService } from "./upload-and-review.service";
 import * as moment from 'moment';
-//import 'dropzone';
+import * as FilePond from 'filepond';
+
 
 declare let Tesseract: any;
 
@@ -14,70 +15,114 @@ declare let Tesseract: any;
 })
 export class UploadAndReviewComponent implements OnInit {
 
+
+  @ViewChild('myPond') myPond: any;
+
+  pondFiles = [
+
+  ];
+
+  pondOptions = {
+    url: 'test',
+    class: 'my-filepond',
+    multiple: true,
+    labelIdle: 'Drop files here',
+    acceptedFileTypes: 'image/jpeg, image/png'
+  };
+
+  pondHandleInit() {
+    console.log('FilePond has initialised', this.myPond);
+  }
+
+  pondHandleAddFile(event: any) {
+
+    console.log('A file was added', event);
+
+    const file = event.file.file;
+
+    this.getBase64(file)
+      .then( base64 => console.log(base64));
+  }
+
+
+  /**
+   * Convert any uploaded file to a base64 string
+   * @param file
+   */
+  getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+
   constructor(private uploadAndReviewSerivce: UploadAndReviewService) {}
 
   ngOnInit() {
 
-    /**
-     * I found some base regex online and played around with it some more to suit our needs
-     * It will match all the number based formats I can think of ... 2 2 4, 4 2 2, 2 4, 4 2, and 2 2.
-     * Where a digit above represents how many digits there are in the string and a space represents a space, /, -, or .
-     * For example: 10/10/2010 is 2 2 4.
-     *
-     * @type {RegExp}
-     */
-    let dateRegex: RegExp = /(\d{4}([.\-/ ])\d{2}\2\d{2}|\d{2}([.\-/ ])\d{2}\3\d{4}|\d{2}([.\-/ ])\d{4}|\d{4}([.\-/ ])\d{2}|\d{2}([.\-/ ])\d{2})/g;
-    // TODO: Need to add support for string based formats as well...e.g. Fri Feb 15...
-
-    Tesseract.recognize('../../assets/images/testSyllabus.jpg')
-      .catch(err => console.error(err))
-      .then((result) => {
-
-        let allRawDates: string[] = result.text.match(dateRegex);
-
-        console.log(result);
-
-        // Establish which date format to use
-        let format = this.grabDateFormat();
-
-        // Convert rawDates to moment dates
-        let allDates = [];
-        let prevMonths: string[] = [];
-        for (let rawDate of allRawDates) {
-
-          // If rawDate doesn't have three groups, we need to add the group to make it valid for Moment.js
-          // If only two groups, we're going to assume it's either MM/DD or DD/MM.
-          // If it's MM/YYYY or YYYY/MM it will most likely be in word form, so we're ignoring those for now.
-          // So we need to inject a year into the string properly.
-          let seperator = /[.,\/ -]/;
-          let rawDateSplit = rawDate.split(seperator);
-          if(rawDateSplit.length === 2) {
-
-            switch(format) {
-              case 'MM/DD/YYYY':
-              case 'MM.DD.YYYY':
-              case 'MM-DD-YYYY':
-              case 'MM DD YYYY':
-                rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, true, format.match(seperator)[0]);
-                break;
-              case 'DD/MM/YYYY':
-              case 'DD.MM.YYYY':
-              case 'DD-MM-YYYY':
-              case 'DD MM YYYY':
-                rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, false, format.match(seperator)[0]);
-                break
-            }
-
-          }
-
-          let date = moment(rawDate, format).format(format);
-          allDates.push(date);
-
-        }
-        console.log(allDates);
-
-      })
-      .finally(resultOrError => console.log(resultOrError))
+    // /**
+    //  * I found some base regex online and played around with it some more to suit our needs
+    //  * It will match all the number based formats I can think of ... 2 2 4, 4 2 2, 2 4, 4 2, and 2 2.
+    //  * Where a digit above represents how many digits there are in the string and a space represents a space, /, -, or .
+    //  * For example: 10/10/2010 is 2 2 4.
+    //  *
+    //  * @type {RegExp}
+    //  */
+    // let dateRegex: RegExp = /(\d{4}([.\-/ ])\d{2}\2\d{2}|\d{2}([.\-/ ])\d{2}\3\d{4}|\d{2}([.\-/ ])\d{4}|\d{4}([.\-/ ])\d{2}|\d{2}([.\-/ ])\d{2})/g;
+    // // TODO: Need to add support for string based formats as well...e.g. Fri Feb 15...
+    //
+    // Tesseract.recognize('../../assets/images/testSyllabus.jpg')
+    //   .catch(err => console.error(err))
+    //   .then((result) => {
+    //
+    //     let allRawDates: string[] = result.text.match(dateRegex);
+    //
+    //     console.log(result);
+    //
+    //     // Establish which date format to use
+    //     let format = this.grabDateFormat();
+    //
+    //     // Convert rawDates to moment dates
+    //     let allDates = [];
+    //     let prevMonths: string[] = [];
+    //     for (let rawDate of allRawDates) {
+    //
+    //       // If rawDate doesn't have three groups, we need to add the group to make it valid for Moment.js
+    //       // If only two groups, we're going to assume it's either MM/DD or DD/MM.
+    //       // If it's MM/YYYY or YYYY/MM it will most likely be in word form, so we're ignoring those for now.
+    //       // So we need to inject a year into the string properly.
+    //       let seperator = /[.,\/ -]/;
+    //       let rawDateSplit = rawDate.split(seperator);
+    //       if(rawDateSplit.length === 2) {
+    //
+    //         switch(format) {
+    //           case 'MM/DD/YYYY':
+    //           case 'MM.DD.YYYY':
+    //           case 'MM-DD-YYYY':
+    //           case 'MM DD YYYY':
+    //             rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, true, format.match(seperator)[0]);
+    //             break;
+    //           case 'DD/MM/YYYY':
+    //           case 'DD.MM.YYYY':
+    //           case 'DD-MM-YYYY':
+    //           case 'DD MM YYYY':
+    //             rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, false, format.match(seperator)[0]);
+    //             break
+    //         }
+    //
+    //       }
+    //
+    //       let date = moment(rawDate, format).format(format);
+    //       allDates.push(date);
+    //
+    //     }
+    //     console.log(allDates);
+    //
+    //   })
+    //   .finally(resultOrError => console.log(resultOrError))
 
   }
 
