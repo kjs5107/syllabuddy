@@ -12,10 +12,12 @@
       <div style="height: 500px;">
 
 
+        <p>{{recognitionState.status}} : {{roundN(recognitionState.progress) * 100}}%</p>
+
         <file-pond #myPond
                    [options]="pondOptions"
                    [files]="pondFiles"
-                   (oninit)="pondHandleInit()"
+                   (onremovefile)="pondHandleRemoveFile($event)"
                    (onaddfile)="pondHandleAddFile($event)">
         </file-pond>
 
