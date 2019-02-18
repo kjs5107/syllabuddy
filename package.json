@@ -24,6 +24,7 @@
     "moment": "^2.24.0",
     "ngx-filepond": "^5.0.0",
     "rxjs": "~6.3.3",
+    "sherlockjs": "^1.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
   },
