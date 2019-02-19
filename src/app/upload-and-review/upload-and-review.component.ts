@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { UploadAndReviewService } from "./upload-and-review.service";
 import * as moment from 'moment';
 import * as FilePond from 'filepond';
+import * as Sherlock from 'sherlockjs';
 
 
 declare let Tesseract: any;
@@ -85,49 +86,69 @@ export class UploadAndReviewComponent implements OnInit {
       .progress((message) => this.recognitionState = message )
       .catch(err => console.error(err))
       .then((result) => {
-
-        let allRawDates: string[] = result.text.match(dateRegex);
-
         console.log(result);
 
-        // Establish which date format to use
-        let format = this.grabDateFormat();
+        let calendarEventsWithDates: {}[] = [];
+        let calendarEventsWithoutDates: {}[] = [];
+        let lastDateFound: string = "";
 
-        // Convert rawDates to moment dates
-        let allDates = [];
-        let prevMonths: string[] = [];
-        for (let rawDate of allRawDates) {
-
-          // If rawDate doesn't have three groups, we need to add the group to make it valid for Moment.js
-          // If only two groups, we're going to assume it's either MM/DD or DD/MM.
-          // If it's MM/YYYY or YYYY/MM it will most likely be in word form, so we're ignoring those for now.
-          // So we need to inject a year into the string properly.
-          let seperator = /[.,\/ -]/;
-          let rawDateSplit = rawDate.split(seperator);
-          if(rawDateSplit.length === 2) {
-
-            switch(format) {
-              case 'MM/DD/YYYY':
-              case 'MM.DD.YYYY':
-              case 'MM-DD-YYYY':
-              case 'MM DD YYYY':
-                rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, true, format.match(seperator)[0]);
-                break;
-              case 'DD/MM/YYYY':
-              case 'DD.MM.YYYY':
-              case 'DD-MM-YYYY':
-              case 'DD MM YYYY':
-                rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, false, format.match(seperator)[0]);
-                break
-            }
-
+        result.lines.forEach((line) => {
+          let event = Sherlock.parse(line.text);
+          
+          if (event.startDate == null && event.endDate == null) {
+            event.probableStartDate = lastDateFound;
+            calendarEventsWithoutDates.push(event);
+          } else {
+            lastDateFound = event.startDate;
+            calendarEventsWithDates.push(event);
           }
+        });
 
-          let date = moment(rawDate, format).format(format);
-          allDates.push(date);
+        console.log(calendarEventsWithDates);
+        console.log(calendarEventsWithoutDates);
 
-        }
-        console.log(allDates);
+
+
+        // let allRawDates: string[] = result.text.match(dateRegex);
+
+        // // Establish which date format to use
+        // let format = this.grabDateFormat();
+
+        // // Convert rawDates to moment dates
+        // let allDates = [];
+        // let prevMonths: string[] = [];
+        // for (let rawDate of allRawDates) {
+
+        //   // If rawDate doesn't have three groups, we need to add the group to make it valid for Moment.js
+        //   // If only two groups, we're going to assume it's either MM/DD or DD/MM.
+        //   // If it's MM/YYYY or YYYY/MM it will most likely be in word form, so we're ignoring those for now.
+        //   // So we need to inject a year into the string properly.
+        //   let seperator = /[.,\/ -]/;
+        //   let rawDateSplit = rawDate.split(seperator);
+        //   if(rawDateSplit.length === 2) {
+
+        //     switch(format) {
+        //       case 'MM/DD/YYYY':
+        //       case 'MM.DD.YYYY':
+        //       case 'MM-DD-YYYY':
+        //       case 'MM DD YYYY':
+        //         rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, true, format.match(seperator)[0]);
+        //         break;
+        //       case 'DD/MM/YYYY':
+        //       case 'DD.MM.YYYY':
+        //       case 'DD-MM-YYYY':
+        //       case 'DD MM YYYY':
+        //         rawDate = this.addYear(rawDateSplit, prevMonths, rawDate, false, format.match(seperator)[0]);
+        //         break
+        //     }
+
+        //   }
+
+        //   let date = moment(rawDate, format).format(format);
+        //   allDates.push(date);
+
+        // }
+        // console.log(allDates);
 
       })
       .finally(resultOrError => console.log(resultOrError))
