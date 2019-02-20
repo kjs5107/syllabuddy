@@ -86,7 +86,9 @@ export class UploadAndReviewComponent implements OnInit {
       .progress((message) => this.recognitionState = message )
       .catch(err => console.error(err))
       .then((result) => {
+
         console.log(result);
+        console.log(result.confidence);
 
         let calendarEventsWithDates: {}[] = [];
         let calendarEventsWithoutDates: {}[] = [];
@@ -94,7 +96,7 @@ export class UploadAndReviewComponent implements OnInit {
 
         result.lines.forEach((line) => {
           let event = Sherlock.parse(line.text);
-          
+
           if (event.startDate == null && event.endDate == null) {
             event.probableStartDate = lastDateFound;
             calendarEventsWithoutDates.push(event);
