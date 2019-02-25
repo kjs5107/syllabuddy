@@ -7,17 +7,16 @@ import * as Sherlock from 'sherlockjs';
 
 declare let Tesseract: any;
 
-enum TestKeywords {
-  Test = "test",
-  Exam = "exam",
-  Assessment = "assessment",
-  Practicum = "praxticum",
-  Practical = "practical",
-  Midterm = "midterm",
-  Final = "final",
-}
-
-
+let keywords = [
+  "test",
+  "exam",
+  "assessment",
+  "practicum",
+  "practical",
+  "midterm",
+  "final",
+  "quiz"
+]
 
 @Component({
   selector: 'app',
@@ -123,11 +122,13 @@ export class UploadAndReviewComponent implements OnInit {
             this.calendarEvents.push(event);
           }
 
+          for (let word of keywords) {
+            if(event.eventTitle != null && event.eventTitle.toLowerCase().includes(word) && !(examEvents.includes(event))) {
+              examEvents.push(event);
+            }
 
-          if(event.eventTitle.toLowerCase() in TestKeywords) {
-            examEvents.push(event);
           }
-          else {
+          if (!(assignmentEvents.includes(event)) && !(examEvents.includes(event))) {
             assignmentEvents.push(event);
           }
         });
