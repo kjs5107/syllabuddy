@@ -88,24 +88,24 @@ export class UploadAndReviewComponent implements OnInit {
       .then((result) => {
         console.log(result);
 
-        let calendarEventsWithDates: {}[] = [];
-        let calendarEventsWithoutDates: {}[] = [];
+        let calendarEvents: {}[] = [];
         let lastDateFound: string = "";
 
         result.lines.forEach((line) => {
           let event = Sherlock.parse(line.text);
-          
+
           if (event.startDate == null && event.endDate == null) {
             event.probableStartDate = lastDateFound;
-            calendarEventsWithoutDates.push(event);
+            event.needsReview = true;
+            calendarEvents.push(event);
           } else {
             lastDateFound = event.startDate;
-            calendarEventsWithDates.push(event);
+            event.needsReview = false;
+            calendarEvents.push(event);
           }
         });
 
-        console.log(calendarEventsWithDates);
-        console.log(calendarEventsWithoutDates);
+        console.log(calendarEvents);
 
 
 

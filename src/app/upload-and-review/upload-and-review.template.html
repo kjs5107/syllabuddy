@@ -28,6 +28,13 @@
 
     <div class="col">
 
+      <h2>Feedback</h2>
+      <div *ngFor="let event of calendarEvents">
+
+        <span *ngIf="event.needsReview"></span>
+
+      </div>
+
     </div>
 
   </div>
