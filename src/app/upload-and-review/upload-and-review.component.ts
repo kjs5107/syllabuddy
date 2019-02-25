@@ -86,7 +86,9 @@ export class UploadAndReviewComponent implements OnInit {
       .progress((message) => this.recognitionState = message )
       .catch(err => console.error(err))
       .then((result) => {
+
         console.log(result);
+        console.log(result.confidence);
 
         let calendarEvents: {}[] = [];
         let lastDateFound: string = "";
