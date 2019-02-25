@@ -26,6 +26,8 @@ export class UploadAndReviewComponent implements OnInit {
 
   ];
 
+  calendarEvents: {}[] = [];
+
   pondOptions = {
     url: 'test',
     class: 'my-filepond',
@@ -33,6 +35,10 @@ export class UploadAndReviewComponent implements OnInit {
     labelIdle: 'Drop files here',
     acceptedFileTypes: 'image/jpeg, image/png'
   };
+
+  constructor(private uploadAndReviewSerivce: UploadAndReviewService) {}
+
+  ngOnInit() {}
 
   pondHandleAddFile(event: any) {
     // extract the File object from the upload event
@@ -90,7 +96,6 @@ export class UploadAndReviewComponent implements OnInit {
         console.log(result);
         console.log(result.confidence);
 
-        let calendarEvents: {}[] = [];
         let lastDateFound: string = "";
 
         result.lines.forEach((line) => {
@@ -99,15 +104,15 @@ export class UploadAndReviewComponent implements OnInit {
           if (event.startDate == null && event.endDate == null) {
             event.probableStartDate = lastDateFound;
             event.needsReview = true;
-            calendarEvents.push(event);
+            this.calendarEvents.push(event);
           } else {
             lastDateFound = event.startDate;
             event.needsReview = false;
-            calendarEvents.push(event);
+            this.calendarEvents.push(event);
           }
         });
 
-        console.log(calendarEvents);
+        console.log(this.calendarEvents);
 
 
 
@@ -154,14 +159,6 @@ export class UploadAndReviewComponent implements OnInit {
 
       })
       .finally(resultOrError => console.log(resultOrError))
-  }
-
-  constructor(private uploadAndReviewSerivce: UploadAndReviewService) {}
-
-  ngOnInit() {
-
-
-
   }
 
 
