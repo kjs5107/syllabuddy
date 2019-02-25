@@ -7,6 +7,16 @@ import * as Sherlock from 'sherlockjs';
 
 declare let Tesseract: any;
 
+enum TestKeywords {
+  Test = "test",
+  Exam = "exam",
+  Assessment = "assessment",
+  Practicum = "praxticum",
+  Practical = "practical",
+  Midterm = "midterm",
+  Final = "final",
+}
+
 
 
 @Component({
@@ -97,6 +107,8 @@ export class UploadAndReviewComponent implements OnInit {
         console.log(result.confidence);
 
         let lastDateFound: string = "";
+        let examEvents: {}[] = [];
+        let assignmentEvents: {}[] = [];
 
         result.lines.forEach((line) => {
           let event = Sherlock.parse(line.text);
@@ -110,9 +122,19 @@ export class UploadAndReviewComponent implements OnInit {
             event.needsReview = false;
             this.calendarEvents.push(event);
           }
+
+
+          if(event.eventTitle.toLowerCase() in TestKeywords) {
+            examEvents.push(event);
+          }
+          else {
+            assignmentEvents.push(event);
+          }
         });
 
         console.log(this.calendarEvents);
+        console.log(examEvents);
+        console.log(assignmentEvents);
 
 
 
