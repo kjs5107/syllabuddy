@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { UploadAndReviewService } from "./upload-and-review.service";
+import { UploadAndReviewService } from './upload-and-review.service';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import * as moment from 'moment';
 import * as FilePond from 'filepond';
 import * as Sherlock from 'sherlockjs';
@@ -7,16 +8,16 @@ import * as Sherlock from 'sherlockjs';
 
 declare let Tesseract: any;
 
-let keywords = [
-  "test",
-  "exam",
-  "assessment",
-  "practicum",
-  "practical",
-  "midterm",
-  "final",
-  "quiz"
-]
+const keywords = [
+  'test',
+  'exam',
+  'assessment',
+  'practicum',
+  'practical',
+  'midterm',
+  'final',
+  'quiz'
+];
 
 @Component({
   selector: 'app',
@@ -36,6 +37,15 @@ export class UploadAndReviewComponent implements OnInit {
   ];
 
   calendarEvents: {}[] = [];
+  assignmentEvents: {}[] = [];
+  assignmentsToReview: {}[] = [];
+  assignmentTableData: any;
+  displayAssignmentTable = false;
+  examEvents: {}[] = [];
+  examsToReview: {}[] = [];
+  examTableData: any;
+  displayExamTable = false;
+  tableColumns: string[] = ['Title', 'Date', 'Confidence'];
 
   pondOptions = {
     url: 'test',
@@ -55,7 +65,7 @@ export class UploadAndReviewComponent implements OnInit {
     this.extractDates(file);
   }
 
-  pondHandleRemoveFile(event: any){
+  pondHandleRemoveFile(event: any) {
     this.recognitionState = this.defaultState;
   }
 
@@ -84,7 +94,7 @@ export class UploadAndReviewComponent implements OnInit {
    *
    * @param f - A file object
    */
-  extractDates(f){
+  extractDates(f) {
 
     /**
      * I found some base regex online and played around with it some more to suit our needs
@@ -106,36 +116,50 @@ export class UploadAndReviewComponent implements OnInit {
         console.log(result.confidence);
 
         let lastDateFound: string = "";
-        let examEvents: {}[] = [];
-        let assignmentEvents: {}[] = [];
+        // examEvents: {}[] = [];
+        // assignmentEvents: {}[] = [];
 
         result.lines.forEach((line) => {
           let event = Sherlock.parse(line.text);
+          event.confidence = Math.round(10 * line.confidence) / 10;
 
           if (event.startDate == null && event.endDate == null) {
-            event.probableStartDate = lastDateFound;
+            event.probableStartDate = moment(lastDateFound).format('MM/DD/YY');
             event.needsReview = true;
             this.calendarEvents.push(event);
           } else {
             lastDateFound = event.startDate;
+            event.startDate = moment(event.startDate).format('MM/DD/YY');
             event.needsReview = false;
             this.calendarEvents.push(event);
           }
 
           for (let word of keywords) {
-            if(event.eventTitle != null && event.eventTitle.toLowerCase().includes(word) && !(examEvents.includes(event))) {
-              examEvents.push(event);
+            if (event.eventTitle != null && event.eventTitle.toLowerCase().includes(word) && !(this.examEvents.includes(event))) {
+              this.examEvents.push(event);
+              if (event.needsReview) {
+                this.examsToReview.push(event);
+                this.displayExamTable = true;
+              }
             }
 
           }
-          if (!(assignmentEvents.includes(event)) && !(examEvents.includes(event))) {
-            assignmentEvents.push(event);
+          if (!(this.assignmentEvents.includes(event)) && !(this.examEvents.includes(event))) {
+            this.assignmentEvents.push(event);
+            if (event.needsReview) {
+              this.assignmentsToReview.push(event);
+              this.displayAssignmentTable = true;
+            }
           }
         });
 
+        this.assignmentTableData = new MatTableDataSource(this.assignmentsToReview);
+        this.examTableData = new MatTableDataSource(this.examsToReview);
+
+
         console.log(this.calendarEvents);
-        console.log(examEvents);
-        console.log(assignmentEvents);
+        console.log(this.examEvents);
+        console.log(this.assignmentEvents);
 
 
 

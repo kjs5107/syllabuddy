@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
 
 // Internal Modules, Components, and Services
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +24,8 @@ import { FilePondModule } from 'ngx-filepond';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    FilePondModule
+    FilePondModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
