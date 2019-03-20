@@ -42,9 +42,14 @@
         <h3>Exams to review</h3>
         <table class="resultTable" mat-table [dataSource]="examTableData">
 
+          <ng-container matColumnDef="Import">
+            <th class="deleteTableColumn" mat-header-cell *matHeaderCellDef> Import </th>
+            <td mat-cell *matCellDef="let assignment"><mat-checkbox checked="true"></mat-checkbox></td>
+          </ng-container>
+
           <ng-container matColumnDef="Title">
             <th class="titleTableColumn" mat-header-cell *matHeaderCellDef> Title </th>
-            <td mat-cell *matCellDef="let exam"> {{exam.eventTitle}} </td>
+            <textarea matInput *matCellDef="let exam"> {{exam.eventTitle}} </textarea>
           </ng-container>
 
           <ng-container matColumnDef="Date">
@@ -65,17 +70,23 @@
 
       <!-- Assignment Table -->
       <div *ngIf="displayAssignmentTable">
-        <h3 class="headerSpacer">Assignments to review</h3>
+        <h3 class="headerSpacer"> Assignments to review</h3>
         <table class="resultTable" mat-table [dataSource]="assignmentTableData">
+
+          <ng-container matColumnDef="Import">
+            <th class="deleteTableColumn" mat-header-cell *matHeaderCellDef> Import </th>
+            <td mat-cell *matCellDef="let assignment"><mat-checkbox checked="true"></mat-checkbox></td>
+          </ng-container>
 
           <ng-container matColumnDef="Title">
             <th class="titleTableColumn" mat-header-cell *matHeaderCellDef> Title </th>
-            <td mat-cell *matCellDef="let assignment"> {{assignment.eventTitle}} </td>
+            <td><textarea matInput *matCellDef="let assignment"> {{assignment.eventTitle}} </textarea></td>
           </ng-container>
 
           <ng-container matColumnDef="Date">
             <th class="dateTableColumn" mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let assignment"> {{assignment.probableStartDate}} </td>
+            <td mat-cell *matCellDef="let assignment"> <textarea>{{assignment.probableStartDate}}</textarea> </td>
+
           </ng-container>
 
           <ng-container matColumnDef="Confidence">
