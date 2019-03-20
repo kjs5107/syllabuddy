@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import * as FilePond from 'filepond';
 import * as Sherlock from 'sherlockjs';
 
-
 declare let Tesseract: any;
 
 const keywords = [
