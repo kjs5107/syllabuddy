@@ -44,17 +44,21 @@
 
           <ng-container matColumnDef="Import">
             <th class="deleteTableColumn" mat-header-cell *matHeaderCellDef> Import </th>
-            <td mat-cell *matCellDef="let assignment"><mat-checkbox checked="true"></mat-checkbox></td>
+            <td mat-cell *matCellDef="let exam"><mat-checkbox checked="true"></mat-checkbox></td>
           </ng-container>
 
           <ng-container matColumnDef="Title">
             <th class="titleTableColumn" mat-header-cell *matHeaderCellDef> Title </th>
-            <textarea matInput *matCellDef="let exam"> {{exam.eventTitle}} </textarea>
+            <td mat-cell *matCellDef="let exam">
+              <textarea [(ngModel)]="exam.eventTitle" (ngModelChange)="testingExamsChange($event)"></textarea>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="Date">
             <th class="dateTableColumn" mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let assignment"> <textarea>{{assignment.probableStartDate}}</textarea> </td>
+            <td mat-cell *matCellDef="let exam">
+              <textarea [(ngModel)]="exam.probableStartDate" (ngModelChange)="testingExamsChange($event)"></textarea>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="Confidence">
@@ -80,17 +84,21 @@
 
           <ng-container matColumnDef="Title">
             <th class="titleTableColumn" mat-header-cell *matHeaderCellDef> Title </th>
-            <td><textarea matInput *matCellDef="let assignment"> {{assignment.eventTitle}} </textarea></td>
+            <td mat-cell *matCellDef="let assignment">
+              <textarea [(ngModel)]="assignment.eventTitle" (ngModelChange)="testingAssignmentsChange($event)"></textarea>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="Date">
             <th class="dateTableColumn" mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let assignment"> <textarea>{{assignment.probableStartDate}}</textarea> </td>
+            <td mat-cell *matCellDef="let assignment">
+              <textarea [(ngModel)]="assignment.probableStartDate" (ngModelChange)="testingAssignmentsChange($event)"></textarea>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="Confidence">
             <th class="confidenceTableColumn" mat-header-cell *matHeaderCellDef> Confidence </th>
-            <td mat-cell *matCellDef="let assignment"> {{assignment.confidence}} </td>
+            <td mat-cell *matCellDef="let assignment">{{assignment.confidence}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>

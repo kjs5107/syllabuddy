@@ -69,11 +69,11 @@ export class UploadAndReviewComponent implements OnInit {
 
     // no matter what store it in the dictionary
     this.seenFiles[file.name] = file;
-  }
+  };
 
   pondHandleRemoveFile(event: any) {
     this.recognitionState = this.defaultState;
-  }
+  };
 
   /**
    * Convert any uploaded file to a base64 string
@@ -86,13 +86,13 @@ export class UploadAndReviewComponent implements OnInit {
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
     });
-  }
+  };
 
 
   roundN(n: number, digits: number = 2): number {
     const p =  Math.pow(10, digits);
     return Math.round( n * p ) / p;
-  }
+  };
 
 
   processFile( file ) {
@@ -110,6 +110,7 @@ export class UploadAndReviewComponent implements OnInit {
 
           this.assignmentTableData = new MatTableDataSource(this.assignmentsToReview);
           this.examTableData = new MatTableDataSource(this.examsToReview);
+          console.log("yo", this.assignmentTableData);
 
           console.log(this.calendarEvents);
           console.log(this.examEvents);
@@ -120,7 +121,7 @@ export class UploadAndReviewComponent implements OnInit {
         })
         .finally(resultOrError => console.log(resultOrError));
 
-  }
+  };
 
 
   parseLines( lines ) {
@@ -161,7 +162,7 @@ export class UploadAndReviewComponent implements OnInit {
       }
     });
 
-  }
+  };
 
 
 
@@ -189,7 +190,7 @@ export class UploadAndReviewComponent implements OnInit {
 
     return rawDate;
 
-  }
+  };
 
   /**
    * Ascertain the user's locale to determine the Date Format to pass into moment.js
@@ -215,6 +216,14 @@ export class UploadAndReviewComponent implements OnInit {
 
     return format;
 
+  };
+
+  testingAssignmentsChange = () => {
+    console.log(this.assignmentTableData.data);
+  }
+
+  testingExamsChange = () => {
+    console.log(this.examTableData.data);
   }
 
 
