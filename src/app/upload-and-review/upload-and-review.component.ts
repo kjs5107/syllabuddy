@@ -64,7 +64,7 @@ export class UploadAndReviewComponent implements OnInit {
 
     // check if we've already seen this file
     if (!this.seenFiles[file.name]) {
-      this.processFile(file);
+      this.seenFiles[file.name] = this.processFile(file);
     }
 
     // no matter what store it in the dictionary
@@ -106,7 +106,21 @@ export class UploadAndReviewComponent implements OnInit {
           console.log(result);
           console.log(result.confidence);
 
-          this.parseLines(result.lines);
+          const { examEvents,
+            assignmentEvents,
+            calendarEvents,
+            examsToReview,
+            assignmentsToReview,
+            displayExamTable,
+            displayAssignmentTable } = this.parseLines(result.lines);
+
+          this.examEvents.push(...examEvents);
+          this.assignmentEvents.push(...assignmentEvents);
+          this.calendarEvents.push(...calendarEvents);
+          this.examsToReview.push(...examsToReview);
+          this.assignmentsToReview.push(...assignmentsToReview);
+          this.displayExamTable = displayExamTable;
+          this.displayAssignmentTable = displayAssignmentTable;
 
           this.assignmentTableData = new MatTableDataSource(this.assignmentsToReview);
           this.examTableData = new MatTableDataSource(this.examsToReview);
@@ -128,6 +142,16 @@ export class UploadAndReviewComponent implements OnInit {
 
     let lastDateFound = '';
 
+    const examEvents = [];
+    const assignmentEvents = [];
+    const calendarEvents = [];
+
+    const examsToReview = [];
+    const assignmentsToReview = [];
+
+    let displayExamTable =  false;
+    let displayAssignmentTable = false;
+
     lines.forEach((line) => {
       const event = Sherlock.parse(line.text);
       event.confidence = Math.round(10 * line.confidence) / 10;
@@ -135,32 +159,36 @@ export class UploadAndReviewComponent implements OnInit {
       if (event.startDate == null && event.endDate == null) {
         event.probableStartDate = moment(lastDateFound).format('MM/DD/YYYY');
         event.needsReview = true;
-        this.calendarEvents.push(event);
+        calendarEvents.push(event);
+
       } else {
         lastDateFound = event.startDate;
         event.startDate = moment(event.startDate).format('MM/DD/YYYY');
         event.needsReview = false;
-        this.calendarEvents.push(event);
+        calendarEvents.push(event);
       }
 
       for (const word of keywords) {
-        if (event.eventTitle != null && event.eventTitle.toLowerCase().includes(word) && !(this.examEvents.includes(event))) {
-          this.examEvents.push(event);
+        if (event.eventTitle != null && event.eventTitle.toLowerCase().includes(word) && !(examEvents.includes(event))) {
+          examEvents.push(event);
           if (event.needsReview) {
-            this.examsToReview.push(event);
-            this.displayExamTable = true;
+            examsToReview.push(event);
+            displayExamTable = true;
           }
         }
 
       }
-      if (!(this.assignmentEvents.includes(event)) && !(this.examEvents.includes(event))) {
-        this.assignmentEvents.push(event);
+      if (!(assignmentEvents.includes(event)) && !(examEvents.includes(event))) {
+        assignmentEvents.push(event);
         if (event.needsReview) {
-          this.assignmentsToReview.push(event);
-          this.displayAssignmentTable = true;
+          assignmentsToReview.push(event);
+          displayAssignmentTable = true;
         }
       }
     });
+    return {  examEvents, assignmentEvents, calendarEvents,
+              examsToReview, assignmentsToReview,
+              displayExamTable, displayAssignmentTable };
 
   };
 
@@ -220,11 +248,11 @@ export class UploadAndReviewComponent implements OnInit {
 
   testingAssignmentsChange = () => {
     console.log(this.assignmentTableData.data);
-  }
+  };
 
   testingExamsChange = () => {
     console.log(this.examTableData.data);
-  }
+  };
 
 
 }
