@@ -41,7 +41,7 @@ export class UploadAndReviewComponent implements OnInit {
   examsToReview: {}[] = [];
   examTableData: any;
   displayExamTable = false;
-  tableColumns: string[] = ['Title', 'Date', 'Confidence'];
+  tableColumns: string[] = ['Import','Title', 'Date', 'Confidence'];
 
 
   seenFiles = {};
@@ -154,13 +154,13 @@ export class UploadAndReviewComponent implements OnInit {
       event.confidence = Math.round(10 * line.confidence) / 10;
 
       if (event.startDate == null && event.endDate == null) {
-        event.probableStartDate = moment(lastDateFound).format('MM/DD/YY');
+        event.probableStartDate = moment(lastDateFound).format('MM/DD/YYYY');
         event.needsReview = true;
         calendarEvents.push(event);
 
       } else {
         lastDateFound = event.startDate;
-        event.startDate = moment(event.startDate).format('MM/DD/YY');
+        event.startDate = moment(event.startDate).format('MM/DD/YYYY');
         event.needsReview = false;
         calendarEvents.push(event);
       }
