@@ -126,8 +126,6 @@ export class UploadAndReviewComponent implements OnInit {
   parseLines( lines ) {
 
     let lastDateFound = '';
-    // examEvents: {}[] = [];
-    // assignmentEvents: {}[] = [];
 
     lines.forEach((line) => {
       const event = Sherlock.parse(line.text);
