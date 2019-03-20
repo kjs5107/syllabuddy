@@ -54,7 +54,7 @@
 
           <ng-container matColumnDef="Date">
             <th class="dateTableColumn" mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let exam"> {{exam.probableStartDate}} </td>
+            <td mat-cell *matCellDef="let assignment"> <textarea>{{assignment.probableStartDate}}</textarea> </td>
           </ng-container>
 
           <ng-container matColumnDef="Confidence">
@@ -86,7 +86,6 @@
           <ng-container matColumnDef="Date">
             <th class="dateTableColumn" mat-header-cell *matHeaderCellDef> Date </th>
             <td mat-cell *matCellDef="let assignment"> <textarea>{{assignment.probableStartDate}}</textarea> </td>
-
           </ng-container>
 
           <ng-container matColumnDef="Confidence">
