@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule} from '@angular/material/checkbox';
 
 // Internal Modules, Components, and Services
 import { AppRoutingModule } from './app-routing.module';
@@ -25,7 +26,8 @@ import { FilePondModule } from 'ngx-filepond';
     AppRoutingModule,
     FormsModule,
     FilePondModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
