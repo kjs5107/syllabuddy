@@ -134,7 +134,7 @@ export class UploadAndReviewComponent implements OnInit {
           console.log(this.examEvents);
           console.log(this.assignmentEvents);
 
-          this.assignmentTableData.data.forEach((exam) => {
+          this.examEvents.forEach((exam) => {
             let x = <any>exam;
 
             const event = new ICS.VEVENT();
@@ -145,6 +145,43 @@ export class UploadAndReviewComponent implements OnInit {
 
             cal.addComponent(event);
           });
+
+          this.assignmentEvents.forEach((assignment) => {
+            let x = <any>assignment;
+
+            const event = new ICS.VEVENT();
+            event.addProp('UID');
+            event.addProp('SUMMARY', '[EXAM] ' + x.eventTitle);
+            event.addProp('DTSTART', new Date(x.startDate), { VALUE: 'DATE' });
+            event.addProp('DTSTAMP', new Date(x.startDate), { VALUE: 'DATE' });
+
+            cal.addComponent(event);
+          });
+
+          this.examTableData.data.forEach((exam) => {
+            let x = <any>exam;
+
+            const event = new ICS.VEVENT();
+            event.addProp('UID');
+            event.addProp('SUMMARY', '[EXAM] ' + x.eventTitle);
+            event.addProp('DTSTART', new Date(x.startDate), { VALUE: 'DATE' });
+            event.addProp('DTSTAMP', new Date(x.startDate), { VALUE: 'DATE' });
+
+            cal.addComponent(event);
+          });
+
+          this.assignmentTableData.data.forEach((assignment) => {
+            let x = <any>assignment;
+
+            const event = new ICS.VEVENT();
+            event.addProp('UID');
+            event.addProp('SUMMARY', '[ASSIGNMENT] ' + x.eventTitle);
+            event.addProp('DTSTART', new Date(x.startDate), { VALUE: 'DATE' });
+            event.addProp('DTSTAMP', new Date(x.startDate), { VALUE: 'DATE' });
+
+            cal.addComponent(event);
+          });
+          console.log(cal.toString());
           this.download('test.ics', cal.toString());
 
           this.recognitionState.status = 'Done';
