@@ -126,19 +126,20 @@ export class UploadAndReviewComponent implements OnInit {
           this.examTableData = new MatTableDataSource(this.examsToReview);
           console.log("yo", this.assignmentTableData);
 
+          const cal = new ICS.VCALENDAR();
+          cal.addProp('VERSION', 2)
+          cal.addProp('PRODID', 'XYZ Corp');
+
           console.log(this.calendarEvents);
           console.log(this.examEvents);
           console.log(this.assignmentEvents);
 
-          const cal = new ICS.VCALENDAR();
-          cal.addProp('VERSION', 2)
-          cal.addProp('PRODID', 'XYZ Corp');
           this.examEvents.forEach((exam) => {
             let x = <any>exam;
 
             const event = new ICS.VEVENT();
             event.addProp('UID');
-            event.addProp('SUMMARY', x.eventTitle);
+            event.addProp('SUMMARY', '[EXAM] ' + x.eventTitle);
             event.addProp('DTSTART', new Date(x.startDate), { VALUE: 'DATE' });
             event.addProp('DTSTAMP', new Date(x.startDate), { VALUE: 'DATE' });
 
