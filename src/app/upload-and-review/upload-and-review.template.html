@@ -44,7 +44,7 @@
 
           <ng-container matColumnDef="Import">
             <th class="deleteTableColumn" mat-header-cell *matHeaderCellDef> Import </th>
-            <td mat-cell *matCellDef="let exam"><mat-checkbox checked="true"></mat-checkbox></td>
+            <td mat-cell *matCellDef="let exam"><mat-checkbox checked="true" (change)="uncheckItems(exam)"></mat-checkbox></td>
           </ng-container>
 
           <ng-container matColumnDef="Title">
@@ -79,7 +79,7 @@
 
           <ng-container matColumnDef="Import">
             <th class="deleteTableColumn" mat-header-cell *matHeaderCellDef> Import </th>
-            <td mat-cell *matCellDef="let assignment"><mat-checkbox checked="true"></mat-checkbox></td>
+            <td mat-cell *matCellDef="let assignment"><mat-checkbox checked="true" (change)="uncheckItems(assignment)"></mat-checkbox></td>
           </ng-container>
 
           <ng-container matColumnDef="Title">
