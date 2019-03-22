@@ -28,16 +28,16 @@ export class LandingPageComponent {
 
     const event = new ICS.VEVENT();
     event.addProp('UID');
+    event.addProp('SUMMARY', 'EXAM: AH');
+    event.addProp('DTSTART', new Date('2019-03-20 10:00:00'));
+    event.addProp('DTEND', new Date('2019-03-20 11:00:00'));
     event.addProp('DTSTAMP', new Date('2019-03-20 10:00:00'), { VALUE: 'DATE-TIME' });
-    event.addProp('ATTENDEE', null, {
-      CN: 'Sample Company',
-      RSVP: 'FALSE:mailto:foo@example.com'
-    })
-    
     cal.addComponent(event);
-    console.log(cal.toString());
-    window.open( "data:text/calendar;charset=utf8," + escape(cal.toString()));
+    // console.log(cal.toString());
+    // this.download("test.ics", cal.toString());
   }
+
+  
 
   helloWorld() {
     console.log(this.landingPageService.helloWorld());

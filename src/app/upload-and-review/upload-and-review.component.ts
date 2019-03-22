@@ -4,6 +4,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import * as moment from 'moment';
 import * as FilePond from 'filepond';
 import * as Sherlock from 'sherlockjs';
+import * as ICS from 'ics-js';
 
 declare let Tesseract: any;
 
@@ -129,6 +130,22 @@ export class UploadAndReviewComponent implements OnInit {
           console.log(this.examEvents);
           console.log(this.assignmentEvents);
 
+          const cal = new ICS.VCALENDAR();
+          cal.addProp('VERSION', 2)
+          cal.addProp('PRODID', 'XYZ Corp');
+          this.examEvents.forEach((exam) => {
+            let x = <any>exam;
+
+            const event = new ICS.VEVENT();
+            event.addProp('UID');
+            event.addProp('SUMMARY', x.eventTitle);
+            event.addProp('DTSTART', new Date(x.startDate), { VALUE: 'DATE' });
+            event.addProp('DTSTAMP', new Date(x.startDate), { VALUE: 'DATE' });
+
+            cal.addComponent(event);
+          });
+          this.download('test.ics', cal.toString());
+
           this.recognitionState.status = 'Done';
 
         })
@@ -136,6 +153,18 @@ export class UploadAndReviewComponent implements OnInit {
 
   };
 
+  download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+  }
 
   parseLines( lines ) {
 
