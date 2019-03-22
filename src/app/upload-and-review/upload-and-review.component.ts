@@ -134,7 +134,7 @@ export class UploadAndReviewComponent implements OnInit {
           console.log(this.examEvents);
           console.log(this.assignmentEvents);
 
-          this.examEvents.forEach((exam) => {
+          this.assignmentTableData.data.forEach((exam) => {
             let x = <any>exam;
 
             const event = new ICS.VEVENT();
