@@ -187,6 +187,7 @@ export class UploadAndReviewComponent implements OnInit {
     lines.forEach((line) => {
       const event = Sherlock.parse(line.text);
       event.confidence = Math.round(10 * line.confidence) / 10;
+      event.isChecked = true;
 
       if (event.startDate == null && event.endDate == null) {
         event.probableStartDate = moment(lastDateFound).format('MM/DD/YYYY');
@@ -272,11 +273,15 @@ export class UploadAndReviewComponent implements OnInit {
   };
 
   testingAssignmentsChange = () => {
-    console.log(this.assignmentTableData.data);
+    //console.log(this.assignmentTableData.data);
   };
 
   testingExamsChange = () => {
-    console.log(this.examTableData.data);
+    //console.log(this.examTableData.data);
+  };
+
+  uncheckItems(exam) {
+    exam.isChecked = !exam.isChecked;
   };
 
 
