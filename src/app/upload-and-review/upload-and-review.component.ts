@@ -33,12 +33,10 @@ export class UploadAndReviewComponent implements OnInit {
 
   calendarEvents: {}[] = [];
   assignmentEvents: {}[] = [];
-  assignmentsToReview: {}[] = [];
 
   assignmentTableData: any;
   displayAssignmentTable = false;
   examEvents: {}[] = [];
-  examsToReview: {}[] = [];
   examTableData: any;
   displayExamTable = false;
   tableColumns: string[] = ['Import','Title', 'Date', 'Confidence'];
@@ -109,22 +107,17 @@ export class UploadAndReviewComponent implements OnInit {
           const { examEvents,
             assignmentEvents,
             calendarEvents,
-            examsToReview,
-            assignmentsToReview,
             displayExamTable,
             displayAssignmentTable } = this.parseLines(result.lines);
 
           this.examEvents.push(...examEvents);
           this.assignmentEvents.push(...assignmentEvents);
           this.calendarEvents.push(...calendarEvents);
-          this.examsToReview.push(...examsToReview);
-          this.assignmentsToReview.push(...assignmentsToReview);
           this.displayExamTable = displayExamTable;
           this.displayAssignmentTable = displayAssignmentTable;
 
-          this.assignmentTableData = new MatTableDataSource(this.assignmentsToReview);
-          this.examTableData = new MatTableDataSource(this.examsToReview);
-          console.log("yo", this.assignmentTableData);
+          this.assignmentTableData = new MatTableDataSource(this.assignmentEvents);
+          this.examTableData = new MatTableDataSource(this.examEvents);
 
           const cal = new ICS.VCALENDAR();
           cal.addProp('VERSION', 2)
@@ -133,30 +126,6 @@ export class UploadAndReviewComponent implements OnInit {
           console.log(this.calendarEvents);
           console.log(this.examEvents);
           console.log(this.assignmentEvents);
-
-          this.examEvents.forEach((exam) => {
-            let x = <any>exam;
-
-            const event = new ICS.VEVENT();
-            event.addProp('UID');
-            event.addProp('SUMMARY', '[EXAM] ' + x.eventTitle);
-            event.addProp('DTSTART', new Date(x.startDate), { VALUE: 'DATE' });
-            event.addProp('DTSTAMP', new Date(x.startDate), { VALUE: 'DATE' });
-
-            cal.addComponent(event);
-          });
-
-          this.assignmentEvents.forEach((assignment) => {
-            let x = <any>assignment;
-
-            const event = new ICS.VEVENT();
-            event.addProp('UID');
-            event.addProp('SUMMARY', '[EXAM] ' + x.eventTitle);
-            event.addProp('DTSTART', new Date(x.startDate), { VALUE: 'DATE' });
-            event.addProp('DTSTAMP', new Date(x.startDate), { VALUE: 'DATE' });
-
-            cal.addComponent(event);
-          });
 
           this.examTableData.data.forEach((exam) => {
             let x = <any>exam;
@@ -195,12 +164,12 @@ export class UploadAndReviewComponent implements OnInit {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
-  
+
     element.style.display = 'none';
     document.body.appendChild(element);
-  
+
     element.click();
-  
+
     document.body.removeChild(element);
   }
 
@@ -211,9 +180,6 @@ export class UploadAndReviewComponent implements OnInit {
     const examEvents = [];
     const assignmentEvents = [];
     const calendarEvents = [];
-
-    const examsToReview = [];
-    const assignmentsToReview = [];
 
     let displayExamTable =  false;
     let displayAssignmentTable = false;
@@ -237,23 +203,16 @@ export class UploadAndReviewComponent implements OnInit {
       for (const word of keywords) {
         if (event.eventTitle != null && event.eventTitle.toLowerCase().includes(word) && !(examEvents.includes(event))) {
           examEvents.push(event);
-          if (event.needsReview) {
-            examsToReview.push(event);
-            displayExamTable = true;
-          }
+          displayExamTable = true;
         }
 
       }
       if (!(assignmentEvents.includes(event)) && !(examEvents.includes(event))) {
         assignmentEvents.push(event);
-        if (event.needsReview) {
-          assignmentsToReview.push(event);
-          displayAssignmentTable = true;
-        }
+        displayAssignmentTable = true;
       }
     });
     return {  examEvents, assignmentEvents, calendarEvents,
-              examsToReview, assignmentsToReview,
               displayExamTable, displayAssignmentTable };
 
   };

@@ -11,7 +11,6 @@ import * as ICS from 'ics-js';
 export class LandingPageComponent {
 
   title = 'Syllabuddy';
-  twoWayExample = 'This is cool!';
 
   // Create an instance of our LandingPageService
   constructor(private landingPageService: LandingPageService) {
@@ -20,7 +19,6 @@ export class LandingPageComponent {
 
   // Angular Lifecycle Hook
   ngOnInit() {
-    this.helloWorld()
 
     const cal = new ICS.VCALENDAR();
     cal.addProp('VERSION', 2)
@@ -35,21 +33,6 @@ export class LandingPageComponent {
     cal.addComponent(event);
     // console.log(cal.toString());
     // this.download("test.ics", cal.toString());
-  }
-
-  
-
-  helloWorld() {
-    console.log(this.landingPageService.helloWorld());
-  }
-
-  setTwoWayBinding() {
-    this.twoWayExample = "Or is it...?";
-    this.checkTwoWayBinding();
-  }
-
-  checkTwoWayBinding() {
-    console.log(this.twoWayExample);
   }
 
 }
