@@ -1,0 +1,109 @@
+
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+  <!--<meta charset="utf-8">-->
+  <!--<title>Syllabuddy</title>-->
+  <!--<base href="/">-->
+
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+  <!--<link rel="icon" type="image/x-icon" href="favicon.ico">-->
+<!--</head>-->
+<!--<body>-->
+  <!--<app-root></app-root>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <base href="https://kjs5107.github.io/syllabuddy/">  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Syllabuddy</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="assets/templates/one-page-wonder/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="556894931660-igfdr9p42rum1ba383s14jtirf6pdrcb.apps.googleusercontent.com">
+  <!-- Custom styles for this template -->
+  <link href="assets/templates/one-page-wonder/css/one-page-wonder.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.f303ebb407976a69024b.css"></head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Syllabuddy</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <div id="my-signin2"></div>
+            <script>
+              function onSuccess(googleUser) {
+                console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+              }
+              function onFailure(error) {
+                console.log(error);
+              }
+              function renderButton() {
+                gapi.signin2.render('my-signin2', {
+                  'scope': 'profile email',
+                  'width': 240,
+                  'height': 50,
+                  'longtitle': true,
+                  'theme': 'dark',
+                  'onsuccess': onSuccess,
+                  'onfailure': onFailure
+                });
+              }
+            </script>
+
+            <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+            
+            <!--a class="nav-link" href="#">Log In</a-->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <app-root></app-root>
+
+
+  <!-- Footer -->
+  <footer class="py-5 bg-black">
+    <div class="container">
+      <p class="m-0 text-center text-white small">Copyright &copy; Syllabyte 2019</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="assets/templates/one-page-wonder/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/templates/one-page-wonder/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!--Tesseract.js-->
+  <script src='https://cdn.jsdelivr.net/gh/naptha/tesseract.js@v1.0.14/dist/tesseract.min.js'></script>
+
+
+
+<script type="text/javascript" src="runtime.a5dd35324ddfd942bef1.js"></script><script type="text/javascript" src="es2015-polyfills.12eccedba99646c7daca.js" nomodule></script><script type="text/javascript" src="polyfills.407a467dedb63cfdd103.js"></script><script type="text/javascript" src="main.08bee854fa2c9d976867.js"></script></body>
+
+</html>
